@@ -13,6 +13,13 @@ export interface StreamInfo {
   resolution?: string;
   bitrate?: string;
   codec?: string;
+  duration?: number;
+  bufferHealth?: number;
+  droppedFrames?: number;
+  packetLoss?: number;
+  startTime?: Date;
+  viewerCount?: number;
+  status?: 'live' | 'buffering' | 'error' | 'idle';
 }
 
 export function useStream(url: string) {
@@ -46,11 +53,18 @@ export function useStream(url: string) {
           console.warn('Failed to record stream in history:', err);
         }
         
-        // Set mock stream info - in a real app, this would come from HLS manifest
+        // Set initial stream info
         setStreamInfo({
           resolution: '1280x720',
           bitrate: '2.5 Mbps',
-          codec: 'H.264'
+          codec: 'H.264',
+          duration: 0,
+          bufferHealth: 98,
+          droppedFrames: 0,
+          packetLoss: 0.2,
+          startTime: new Date(),
+          viewerCount: Math.floor(Math.random() * 1000) + 500,
+          status: 'live'
         });
         
         setIsLoading(false);

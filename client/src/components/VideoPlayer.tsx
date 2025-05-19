@@ -1,6 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import VideoControls from "./VideoControls";
+import StreamStats from "./StreamStats";
 import { initHlsPlayer, destroyHlsPlayer } from "@/lib/hlsPlayer";
 import { QualityLevel, StreamInfo } from "@/hooks/use-stream";
 
@@ -325,6 +326,17 @@ export default function VideoPlayer({ url, isLoading, error, streamInfo }: Video
               <span>Watch Later</span>
             </Button>
           </div>
+        </div>
+      )}
+      
+      {/* Stream Statistics Section */}
+      {url && !error && !isLoading && streamInfo && (
+        <div className="mt-6">
+          <StreamStats 
+            isPlaying={isPlaying} 
+            streamInfo={streamInfo} 
+            currentTime={currentTime} 
+          />
         </div>
       )}
     </div>
