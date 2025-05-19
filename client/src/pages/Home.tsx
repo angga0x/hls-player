@@ -1,19 +1,11 @@
 import StreamURLInput from "@/components/StreamURLInput";
 import VideoPlayer from "@/components/VideoPlayer";
-import RecentStreams from "@/components/RecentStreams";
 import { useStream } from "@/hooks/use-stream";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 
 export default function Home() {
   const [streamUrl, setStreamUrl] = useState<string>("");
   const { isLoading, error, streamInfo } = useStream(streamUrl);
-
-  // Fetch recently played streams
-  const { data: recentStreams = [] } = useQuery({
-    queryKey: ['/api/recent-streams'],
-    enabled: true,
-  });
 
   const handleUrlSubmit = (url: string) => {
     setStreamUrl(url);
@@ -41,9 +33,6 @@ export default function Home() {
           error={error} 
           streamInfo={streamInfo}
         />
-
-        {/* Recently Played Section */}
-        <RecentStreams streams={recentStreams} />
       </div>
     </div>
   );
