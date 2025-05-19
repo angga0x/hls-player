@@ -35,11 +35,14 @@ export function initHlsPlayer(video: HTMLVideoElement, url: string, options: Hls
     }
   }
 
-  // Create a new HLS instance
+  // Create a new HLS instance with optimized configuration
   const hls = new Hls({
     enableWorker: true,
     lowLatencyMode: true,
-    backBufferLength: 90
+    backBufferLength: 90,
+    maxBufferLength: 60, // default 30
+    maxMaxBufferLength: 120,
+    liveSyncDuration: 10
   });
   
   hlsInstances.set(video, hls);
