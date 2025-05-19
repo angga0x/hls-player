@@ -103,23 +103,25 @@ export default function VideoControls({
   return (
     <div 
       ref={controlsRef} 
-      className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent opacity-0 transition-opacity duration-300"
+      className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent opacity-0 transition-opacity duration-300"
     >
       {/* Progress Bar */}
-      <div className="mb-2">
+      <div className="mb-2 mx-1 group">
         <div 
           ref={progressBarRef}
-          className="h-1.5 bg-gray-600/50 rounded-full cursor-pointer relative"
+          className="h-2 bg-gray-600/40 rounded-full cursor-pointer relative group-hover:h-3 transition-all duration-200"
           onClick={handleProgressBarClick}
         >
           <div 
-            className="h-full bg-gray-400/30 rounded-full absolute top-0 left-0"
+            className="h-full bg-white/20 rounded-full absolute top-0 left-0 transition-all"
             style={{ width: `${bufferedProgress}%` }}
           />
           <div 
-            className="h-full bg-primary rounded-full absolute top-0 left-0"
+            className="h-full bg-gradient-to-r from-primary to-secondary rounded-full absolute top-0 left-0 transition-all"
             style={{ width: `${playedProgress}%` }}
-          />
+          >
+            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          </div>
         </div>
       </div>
       
@@ -128,9 +130,9 @@ export default function VideoControls({
         <div className="flex items-center gap-4">
           {/* Play/Pause Button */}
           <button 
-            className="text-light hover:text-primary transition-colors"
+            className="text-white hover:text-primary transition-colors p-1.5 rounded-full hover:bg-white/10 active:bg-white/20"
             onClick={onPlayPause}
-            aria-label={isPlaying ? "Pause" : "Play"}
+            aria-label={isPlaying ? "Jeda" : "Putar"}
           >
             <span className="material-icons text-3xl">
               {isPlaying ? "pause" : "play_arrow"}
@@ -138,17 +140,17 @@ export default function VideoControls({
           </button>
           
           {/* Volume Control */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 group relative">
             <button 
-              className="text-light hover:text-primary transition-colors"
+              className="text-white hover:text-primary transition-colors p-1 rounded-full hover:bg-white/10"
               onClick={onMute}
-              aria-label={isMuted ? "Unmute" : "Mute"}
+              aria-label={isMuted ? "Bunyikan" : "Diamkan"}
             >
               <span className="material-icons">
                 {getVolumeIcon()}
               </span>
             </button>
-            <div className="hidden sm:block w-20">
+            <div className="hidden sm:block w-0 group-hover:w-20 overflow-hidden transition-all duration-300">
               <input 
                 type="range" 
                 min="0" 
@@ -157,36 +159,42 @@ export default function VideoControls({
                 className="w-full h-1.5 bg-gray-600/50 rounded-full appearance-none cursor-pointer"
                 onChange={(e) => onVolumeChange(parseInt(e.target.value))}
                 style={{
-                  background: `linear-gradient(to right, var(--primary) 0%, var(--primary) ${isMuted ? 0 : volume}%, rgba(255, 255, 255, 0.2) ${isMuted ? 0 : volume}%, rgba(255, 255, 255, 0.2) 100%)`
+                  background: `linear-gradient(to right, var(--primary) 0%, var(--secondary) ${isMuted ? 0 : volume}%, rgba(255, 255, 255, 0.2) ${isMuted ? 0 : volume}%, rgba(255, 255, 255, 0.2) 100%)`
                 }}
               />
             </div>
           </div>
           
           {/* Time Display */}
-          <div className="text-sm text-light-darker hidden sm:block">
+          <div className="text-sm text-white font-medium hidden sm:flex items-center bg-black/30 px-2 py-0.5 rounded-md border border-white/10">
             <span>{formatTime(currentTime)}</span>
-            <span> / </span>
+            <span className="mx-1 text-white/50">/</span>
             <span>{formatTime(duration)}</span>
           </div>
         </div>
         
         <div className="flex items-center gap-3">
           {/* Forward Button */}
-          <button className="text-light hover:text-primary transition-colors hidden sm:block">
+          <button className="text-white hover:text-primary transition-colors hidden sm:flex p-1 rounded-full hover:bg-white/10 items-center">
             <span className="material-icons">forward_10</span>
           </button>
           
+          {/* Quality Indicator */}
+          <div className="hidden md:flex items-center text-xs text-white/80 bg-black/30 px-2 py-0.5 rounded-md border border-white/10">
+            <span className="material-icons text-xs mr-1">hd</span>
+            <span>HD</span>
+          </div>
+          
           {/* PiP Button */}
-          <button className="text-light hover:text-primary transition-colors hidden sm:block">
+          <button className="text-white hover:text-primary transition-colors hidden sm:flex p-1 rounded-full hover:bg-white/10 items-center">
             <span className="material-icons">picture_in_picture_alt</span>
           </button>
           
           {/* Fullscreen Button */}
           <button 
-            className="text-light hover:text-primary transition-colors"
+            className="text-white hover:text-primary transition-colors p-1 rounded-full hover:bg-white/10"
             onClick={onFullscreen}
-            aria-label={isFullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+            aria-label={isFullscreen ? "Keluar Layar Penuh" : "Layar Penuh"}
           >
             <span className="material-icons">
               {isFullscreen ? "fullscreen_exit" : "fullscreen"}

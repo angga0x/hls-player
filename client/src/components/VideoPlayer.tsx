@@ -328,24 +328,44 @@ export default function VideoPlayer({ url, isLoading, error, streamInfo }: Video
 
       {/* Player Footer */}
       {url && !error && !isLoading && (
-        <div className="px-6 py-4 flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h3 className="font-medium mb-1">Live Stream</h3>
-            <p className="text-sm text-light-darker">
-              {streamInfo?.resolution && <span>{streamInfo.resolution} • </span>}
-              {streamInfo?.bitrate && <span>{streamInfo.bitrate} • </span>}
-              {streamInfo?.codec && <span>{streamInfo.codec}</span>}
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <Button variant="outline" size="sm" className="px-3 py-1.5 text-sm bg-dark-lightest hover:bg-dark-lighter rounded-lg transition-colors flex items-center gap-1">
-              <span className="material-icons text-sm">share</span>
-              <span>Share</span>
-            </Button>
-            <Button variant="secondary" size="sm" className="px-3 py-1.5 text-sm bg-secondary hover:bg-secondary-dark rounded-lg transition-colors flex items-center gap-1">
-              <span className="material-icons text-sm">play_arrow</span>
-              <span>Watch Later</span>
-            </Button>
+        <div className="px-6 py-4 bg-gradient-to-r from-background/90 to-muted/70 border-t border-border/80">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h3 className="font-semibold mb-1 flex items-center gap-1.5">
+                <span className="material-icons text-secondary text-sm">stream</span>
+                <span>Informasi Stream</span>
+              </h3>
+              <div className="flex items-center text-sm text-muted-foreground gap-2 flex-wrap">
+                {streamInfo?.resolution && (
+                  <div className="flex items-center bg-muted/50 px-2 py-0.5 rounded">
+                    <span className="material-icons text-xs mr-1">hd</span>
+                    <span>{streamInfo.resolution}</span>
+                  </div>
+                )}
+                {streamInfo?.bitrate && (
+                  <div className="flex items-center bg-muted/50 px-2 py-0.5 rounded">
+                    <span className="material-icons text-xs mr-1">speed</span>
+                    <span>{streamInfo.bitrate}</span>
+                  </div>
+                )}
+                {streamInfo?.codec && (
+                  <div className="flex items-center bg-muted/50 px-2 py-0.5 rounded">
+                    <span className="material-icons text-xs mr-1">code</span>
+                    <span>{streamInfo.codec}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className="flex gap-3">
+              <Button variant="outline" size="sm" className="px-3 py-1.5 text-sm bg-background/80 hover:bg-background rounded-lg transition-all flex items-center gap-1 border border-border/60 shadow-sm">
+                <span className="material-icons text-sm">share</span>
+                <span>Bagikan</span>
+              </Button>
+              <Button variant="secondary" size="sm" className="px-3 py-1.5 text-sm bg-secondary hover:opacity-90 rounded-lg transition-all flex items-center gap-1 shadow-sm text-secondary-foreground">
+                <span className="material-icons text-sm">bookmark</span>
+                <span>Simpan</span>
+              </Button>
+            </div>
           </div>
         </div>
       )}
