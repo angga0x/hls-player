@@ -183,45 +183,58 @@ export default function VideoPlayer({ url, isLoading, error, streamInfo }: Video
   };
 
   return (
-    <div className="bg-dark-lighter rounded-xl shadow-lg overflow-hidden">
+    <div className="bg-card rounded-xl shadow-xl overflow-hidden border border-border/40">
       {/* Player Header */}
-      <div className="px-6 py-4 border-b border-dark-lightest flex justify-between items-center">
-        <div>
-          <h2 className="text-xl font-medium">Stream Player</h2>
-          {url && !error && !isLoading && (
-            <p className="text-secondary text-sm flex items-center gap-1">
-              <span className="w-2 h-2 rounded-full bg-secondary inline-block"></span>
-              Live Streaming
-            </p>
-          )}
+      <div className="px-6 py-4 border-b border-border/80 flex justify-between items-center bg-gradient-to-r from-background/90 to-muted/70">
+        <div className="flex items-center">
+          <span className="material-icons text-primary text-2xl mr-3">smart_display</span>
+          <div>
+            <h2 className="text-xl font-semibold">Stream Player</h2>
+            {url && !error && !isLoading && (
+              <p className="text-secondary text-sm flex items-center gap-1 font-medium">
+                <span className="w-2 h-2 rounded-full bg-secondary inline-block animate-pulse"></span>
+                <span>Live Streaming</span>
+              </p>
+            )}
+          </div>
         </div>
         <div className="flex items-center gap-3">
           {url && !error && availableQualities.length > 0 && (
             <div className="relative">
               <button 
-                className="text-light-darker hover:text-light flex items-center gap-1 py-1 px-2 rounded hover:bg-dark-lightest transition-colors"
+                className="flex items-center gap-1 py-1.5 px-3 rounded-lg border border-border/60 bg-background/60 hover:bg-background/90 transition-colors shadow-sm"
                 onClick={toggleQualityDropdown}
               >
-                <span className="material-icons text-sm">settings</span>
-                <span>Quality</span>
-                <span className="material-icons text-sm">arrow_drop_down</span>
+                <span className="material-icons text-primary text-sm">settings</span>
+                <span className="text-sm font-medium">Kualitas</span>
+                <span className="material-icons text-sm text-muted-foreground">arrow_drop_down</span>
               </button>
               {showQualityDropdown && (
-                <div className="quality-dropdown show absolute bottom-100 right-0 bg-dark-lightest rounded-lg shadow-lg min-w-[150px] z-10">
+                <div className="quality-dropdown absolute top-full right-0 mt-1 bg-popover rounded-lg shadow-xl min-w-[150px] z-10 border border-border/40 overflow-hidden">
                   {availableQualities.map((quality, index) => (
                     <div 
                       key={index}
-                      className={`quality-option p-2 hover:bg-dark-lighter cursor-pointer ${selectedQuality === quality.height.toString() + 'p' ? 'text-primary' : ''}`}
+                      className={`quality-option p-2.5 px-3 hover:bg-muted cursor-pointer transition-colors ${selectedQuality === quality.height.toString() + 'p' ? 'bg-primary/10 text-primary font-medium' : ''}`}
                       onClick={() => selectQuality(quality)}
                     >
-                      <span>{quality.height}p</span>
+                      <div className="flex items-center">
+                        {selectedQuality === quality.height.toString() + 'p' && (
+                          <span className="material-icons text-sm mr-1.5">check</span>
+                        )}
+                        <span>{quality.height}p</span>
+                      </div>
                     </div>
                   ))}
                   <div 
-                    className={`quality-option p-2 hover:bg-dark-lighter cursor-pointer ${selectedQuality === 'Auto' ? 'text-primary' : ''}`}
+                    className={`quality-option p-2.5 px-3 hover:bg-muted cursor-pointer transition-colors ${selectedQuality === 'Auto' ? 'bg-primary/10 text-primary font-medium' : ''}`}
                     onClick={() => setSelectedQuality('Auto')}
                   >
-                    <span>Auto</span>
+                    <div className="flex items-center">
+                      {selectedQuality === 'Auto' && (
+                        <span className="material-icons text-sm mr-1.5">check</span>
+                      )}
+                      <span>Otomatis</span>
+                    </div>
                   </div>
                 </div>
               )}
@@ -231,47 +244,55 @@ export default function VideoPlayer({ url, isLoading, error, streamInfo }: Video
       </div>
 
       {/* Video Container */}
-      <div className="video-container relative bg-black aspect-video flex items-center justify-center">
+      <div className="video-container relative bg-black aspect-video flex items-center justify-center overflow-hidden rounded-sm">
         {/* Loading State */}
         {isLoading && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-dark bg-opacity-70 z-10 animate-fade-in">
-            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-            <p className="text-light">Loading stream...</p>
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm z-10 animate-in fade-in duration-300">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-20 blur-xl rounded-full"></div>
+              <div className="w-16 h-16 border-3 border-primary border-t-transparent rounded-full animate-spin mb-4 relative"></div>
+            </div>
+            <p className="text-foreground font-medium mt-4">Memuat stream...</p>
           </div>
         )}
 
         {/* Error State */}
         {error && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-dark bg-opacity-80 z-10">
-            <span className="material-icons text-5xl text-error mb-4">error_outline</span>
-            <h3 className="text-xl font-medium mb-2">Stream Error</h3>
-            <p className="text-light-darker text-center max-w-md">
-              {error.message || "Unable to load the stream. Please check the URL and try again."}
-            </p>
-            <Button 
-              className="mt-4 px-4 py-2 bg-primary hover:bg-primary-dark rounded-lg transition-colors"
-              onClick={handleRetry}
-            >
-              Try Again
-            </Button>
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/90 backdrop-blur-sm z-10">
+            <div className="p-8 rounded-xl bg-background/70 border border-destructive/20 shadow-lg max-w-md text-center">
+              <span className="material-icons text-6xl text-destructive mb-4 opacity-80">error_outline</span>
+              <h3 className="text-xl font-semibold mb-3">Error Stream</h3>
+              <p className="text-muted-foreground mb-5">
+                {error.message || "Gagal memuat stream. Silakan periksa URL dan coba lagi."}
+              </p>
+              <Button 
+                className="px-5 py-2.5 bg-gradient-to-r from-primary to-secondary hover:brightness-110 text-white font-medium rounded-lg transition-all shadow-md hover:shadow-lg flex items-center gap-2 mx-auto"
+                onClick={handleRetry}
+              >
+                <span className="material-icons">refresh</span>
+                <span>Coba Lagi</span>
+              </Button>
+            </div>
           </div>
         )}
 
         {/* No URL State */}
         {!url && !isLoading && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-dark-lightest z-10">
-            <div className="w-1/2 max-w-md text-center">
-              <span className="material-icons text-6xl text-light-darker mb-4">play_circle_outline</span>
-              <h3 className="text-xl font-medium mb-2">Ready to Stream</h3>
-              <p className="text-light-darker mb-6">Enter an M3U8 URL above and click "Load Stream" to begin watching</p>
-              <div className="flex gap-4 justify-center">
-                <Button className="px-4 py-2 bg-primary hover:bg-primary-dark rounded-lg transition-colors flex items-center gap-2">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-muted/80 backdrop-blur-sm z-10 p-4">
+            <div className="max-w-md text-center bg-background/70 p-8 rounded-2xl border border-border/60 shadow-lg">
+              <div className="bg-gradient-to-r from-primary/20 to-secondary/20 p-5 rounded-full inline-block mb-6">
+                <span className="material-icons text-6xl text-primary">play_circle</span>
+              </div>
+              <h3 className="text-2xl font-semibold mb-3">Siap Streaming</h3>
+              <p className="text-muted-foreground mb-6">Masukkan URL M3U8 di atas dan klik "Putar Stream" untuk mulai menonton</p>
+              <div className="flex gap-4 justify-center flex-wrap">
+                <Button className="px-4 py-2.5 bg-primary/90 hover:bg-primary rounded-lg transition-colors flex items-center gap-2 shadow-md">
                   <span className="material-icons">help_outline</span>
-                  <span>Need Help?</span>
+                  <span>Bantuan</span>
                 </Button>
-                <Button variant="outline" className="px-4 py-2 bg-dark-lightest hover:bg-dark-lighter border border-gray-700 rounded-lg transition-colors flex items-center gap-2">
+                <Button variant="outline" className="px-4 py-2.5 bg-card hover:bg-muted border border-border rounded-lg transition-colors flex items-center gap-2 shadow-sm">
                   <span className="material-icons">smart_display</span>
-                  <span>Sample Streams</span>
+                  <span>Stream Contoh</span>
                 </Button>
               </div>
             </div>
